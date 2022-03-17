@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using webapp.Core.IConfiguration;
 using webapp.Data;
 using webapp.Entities;
@@ -21,6 +22,11 @@ namespace webapp.Pages.Expenses
         }
 
         public IEnumerable<Expense> Expenses { get;set; }
+        [BindProperty]
+        public string SelectedCategoryName { get; set; }
+        public IEnumerable<Category> CategoriesModel { get; set; }
+        
+        
 
         public async Task OnGetAsync()
         {
@@ -32,10 +38,38 @@ namespace webapp.Pages.Expenses
             {
                 Expenses = await _unitOfWork.Expenses.GetAllAsync();
             }
+
+            var res = JsonConvert.SerializeObject(await _unitOfWork.Categories.GetAllAsync(), Formatting.None,
+            new JsonSerializerSettings()
+            { 
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            CategoriesModel = JsonConvert.DeserializeObject<IEnumerable<Category>>(res);
         }
-        public async Task<Category> GetCategory(Guid id)
+        public async Task<IActionResult> OnPostAsync()
         {
-            return await _unitOfWork.Categories.GetByIdAsync(id);
+            if(SelectedCategoryName is not null)
+            {
+                var entity = await _unitOfWork.Categories.GetByNameAsync(SelectedCategoryName);
+                Expenses = User.Identity.Name == "admin"            ? 
+                    (await _unitOfWork.Expenses.GetAllAsync())
+                    .Where(x => x.CategoryId == entity.Id).ToList() : 
+                    (await _unitOfWork.Expenses.GetAllAsync())
+                    .Where(x => x.AuthorName == User.Identity.Name)
+                    .Where(x => x.CategoryId == entity.Id).ToList();
+            }
+            else
+            {
+                Expenses = User.Identity.Name == "admin" ? await _unitOfWork.Expenses.GetAllAsync() : (await _unitOfWork.Expenses.GetAllAsync()).Where(x => x.AuthorName == User.Identity.Name).ToList();
+            }
+            
+            var res = JsonConvert.SerializeObject(await _unitOfWork.Categories.GetAllAsync(), Formatting.None,
+            new JsonSerializerSettings()
+            { 
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            CategoriesModel = JsonConvert.DeserializeObject<IEnumerable<Category>>(res);
+            return Page();
         }
     }
 }

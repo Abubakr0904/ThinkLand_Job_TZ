@@ -9,6 +9,16 @@
     <div class="row pt-4">
         <div class="col-6">
             <h2 class="text-primary">Expense List</h2>
+            <form method="post" class="row ">
+                <select class="form-select form-select-md w-50" asp-for="SelectedCategoryName" aria-label=".form-select-md example">
+                    <option value="">Category</option>
+                    @foreach (var category in @Model.CategoriesModel)
+                    {
+                        <option value="@category.Name">@category?.Name</option>                
+                    }
+                </select>
+                <button type="submit" class="mx-2 w-25 d-inline-block btn btn-primary">Filter</button>
+            </form>
         </div>
         <div class="col-6 text-end">
             <a asp-page="Create" class="btn btn-success">

@@ -59,7 +59,7 @@ namespace webapp.Pages.Expenses
             await _unitOfWork.Expenses.AddAsync(Expense);
             await _unitOfWork.CompleteAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Expenses/Index");
         }
     }
 }
