@@ -16,8 +16,15 @@ public class CategoryRepository : GenericRepository<Category>, ICategoryReposito
             var category = await _dbSet.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if(category != null)
             {
-                category.Name = entity.Name;
-
+                if(category.Name == entity.Name)
+                {
+                    return false;
+                }
+                else
+                {
+                    category.Name = entity.Name;
+                    category.UpdatedAt = DateTimeOffset.UtcNow;
+                }
                 return true;
             }
             return false;
@@ -52,7 +59,19 @@ public class CategoryRepository : GenericRepository<Category>, ICategoryReposito
     {
         try
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbSet.AsNoTracking().Include(x => x.Expenses).FirstOrDefaultAsync(x => x.Id == id);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.Message, "{Repo} GetByIdAsync method", typeof(CategoryRepository));
+            return null;
+        }
+    }
+    public async override Task<Category> GetByNameAsync(string name)
+    {
+        try
+        {
+            return await _dbSet.AsNoTracking().Include(x => x.Expenses).FirstOrDefaultAsync(x => x.Name == name);
         }
         catch(Exception ex)
         {
@@ -64,7 +83,7 @@ public class CategoryRepository : GenericRepository<Category>, ICategoryReposito
     {
         try
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.AsNoTracking().Include(x => x.Expenses).ToListAsync();
         }
         catch (Exception ex)
         {

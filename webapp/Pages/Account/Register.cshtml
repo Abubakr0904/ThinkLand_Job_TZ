@@ -1,0 +1,67 @@
+@page
+@model webapp.Pages.Account.RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<form class="d-flex justify-content-center form-signup" method="post">
+
+    <div class="login-box" style="margin-top:70px;">
+        <h4 class="text-primary text-center brand-text font-weight-light">Expense App</h4>
+        <a href="/" class="brand-link d-flex justify-content-center">
+        </a>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <h3 class="login-box-msg text-center">Log in</h3>
+
+                <form method="post">
+                    @if(@Model?.RegisterViewModel?.ErrorMessage is not null)
+                    {
+                        <div class="d-flex text-wrap">
+                            <p class="text-danger">@Model.RegisterViewModel.ErrorMessage</p>
+                        </div>
+                    }
+                    <div class="mb-3">
+                        <label asp-for="RegisterViewModel.UserName" class="d-none"></label>
+                        <input asp-for="RegisterViewModel.UserName" class="form-control mb-2" placeholder="User Name"/>
+                        <span asp-validation-for="RegisterViewModel.UserName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="RegisterViewModel.FullName" class="d-none"></label>
+                        <input asp-for="RegisterViewModel.FullName" class="form-control mb-2" placeholder="Full Name"/>
+                        <span asp-validation-for="RegisterViewModel.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="RegisterViewModel.Password" class="d-none"></label>
+                        <input asp-for="RegisterViewModel.Password" class="form-control mb-2" placeholder="Password"/>
+                        <span asp-validation-for="RegisterViewModel.Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="RegisterViewModel.PasswordSecond" class="d-none"></label>
+                        <input asp-for="RegisterViewModel.PasswordSecond" class="form-control mb-2" placeholder="Password Again"/>
+                        <span asp-validation-for="RegisterViewModel.PasswordSecond" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex row">
+                        <div class="col text-center">
+                            <button type="submit" class="w-100 btn btn-primary">Sign Up</button>
+                        </div>
+                    </div>
+                    <br>
+                </form>
+                <div class="d-flex justify-content-center col-12">
+                    <span>Already have an account?</span> &nbsp;
+                    <a asp-page="./Login" class="text-center ">
+                        <span>Sign In</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

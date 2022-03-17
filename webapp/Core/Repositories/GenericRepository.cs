@@ -25,6 +25,10 @@ namespace webapp.Core.Repositories
         {
             return await _dbSet.FindAsync(id);
         }
+        public virtual Task<T> GetByNameAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual async Task<bool> AddAsync(T entity)
         {

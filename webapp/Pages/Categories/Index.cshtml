@@ -1,0 +1,68 @@
+@page
+@model webapp.Pages.Categories.IndexModel
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-page="Create" class="btn btn-success">
+                <i class="bi bi-plus-circle">&nbsp</i> Create New Category
+            </a>
+        </div>
+    </div>
+</div>
+<br><br>
+<table class="table table-bordered table-striped" style="width:100%;">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Category Name
+            </th>
+            <th>
+                Created DateTime
+            </th>
+            <th>
+                Updated DateTime
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model.Categories != null)
+        {
+            @foreach (var obj in Model.Categories)
+            {
+                <tr>
+                    <td>
+                        @obj.Id.ToString().Substring(0, 10)
+                    </td>
+                    <td>
+                        @obj.Name
+                    </td>
+                    <td>
+                        @obj.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss")
+                    </td>
+                    <td>
+                        @obj.UpdatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss")
+                    </td>
+                    <td style="min-width: 147px;">
+                        <a asp-page="./Edit" asp-route-id="@obj.Id" 
+                        class="btn btn-primary mx-1"> <i class="bi bi-pencil-square"></i> Edit</a>
+                        
+                        <a asp-page="./Delete" asp-route-id="@obj.Id" 
+                        class="btn btn-danger mx-1"> <i class="bi bi-trash-fill"></i> Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

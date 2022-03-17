@@ -13,7 +13,7 @@ public class ExpenseRepository : GenericRepository<Expense>, IExpenseRepository
     {
         try
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbSet.AsNoTracking().Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
         }
         catch(Exception ex)
         {
@@ -25,7 +25,7 @@ public class ExpenseRepository : GenericRepository<Expense>, IExpenseRepository
     {
         try
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.AsNoTracking().Include(x => x.Category).ToListAsync();
         }
         catch (Exception ex)
         {
@@ -37,10 +37,8 @@ public class ExpenseRepository : GenericRepository<Expense>, IExpenseRepository
     {
         try
         {
-            var existing = await GetByIdAsync(entity.Id);
-            if(existing != null)
+            if(_dbSet.Any(x => x.Id == entity.Id))
                 return false;
-            
             await _dbSet.AddAsync(entity);
             return true;
         }
@@ -57,10 +55,15 @@ public class ExpenseRepository : GenericRepository<Expense>, IExpenseRepository
             var expense = await _dbSet.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if(expense != null)
             {
+                if( expense.Id == entity.Id && expense.CategoryId == entity.CategoryId 
+                    && expense.Name == entity.Name && expense.Amount == entity.Amount)
+                {
+                    return false;
+                }
                 expense.Name = entity.Name;
                 expense.Amount = entity.Amount;
                 expense.UpdatedAt = DateTimeOffset.UtcNow;
-                expense.Category.Name = entity.Category.Name;
+                expense.CategoryId = entity.CategoryId;
                 return true;
             }
             return false;

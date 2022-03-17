@@ -22,10 +22,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             Categories = new CategoryRepository(_context, _logger);
         }
 
-        public async Task CompleteAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
+        public async Task<int> CompleteAsync()
+            => await _context.SaveChangesAsync();
 
         public void Dispose()
         {

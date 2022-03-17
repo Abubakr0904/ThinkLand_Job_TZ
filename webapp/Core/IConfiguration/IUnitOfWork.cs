@@ -6,5 +6,5 @@ public interface IUnitOfWork
     ICategoryRepository Categories { get; }
     IExpenseRepository Expenses { get; }
 
-    Task CompleteAsync();
+    Task<int> CompleteAsync();
 }
