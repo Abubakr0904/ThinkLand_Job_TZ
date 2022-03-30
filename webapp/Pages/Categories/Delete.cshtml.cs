@@ -13,6 +13,10 @@ namespace webapp.Pages.Categories
         {
             _unitOfWork = unitOfWork;
         }
+        public string CreatedAt { get; set; } = "";
+        public string UpdatedAt { get; set; } = "";
+        
+        
 
         [BindProperty]
         public Category Category { get; set; }
@@ -25,6 +29,8 @@ namespace webapp.Pages.Categories
             }
 
             Category = await _unitOfWork.Categories.GetByIdAsync(id.Value);
+            CreatedAt = Category?.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss");
+            UpdatedAt = Category?.UpdatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss");
 
             if (Category == null)
             {

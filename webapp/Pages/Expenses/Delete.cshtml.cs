@@ -1,3 +1,4 @@
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,10 @@ namespace webapp.Pages.Expenses
         {
             _unitOfWork = unitOfWork;
         }
-
+        public string Culture { get; set; } = "dd MMM yyyy HH:mm:ss";
+        
+        
+        
         [BindProperty]
         public Expense Expense { get; set; }
 

@@ -2,18 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no" />
     <title>@ViewData["Title"] - webapp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/webapp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+    @* Metronics themes *@
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">webapp</a>
+                <a class="navbar-brand text-success" asp-area="" asp-page="/Index">Expense Controller</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,7 +31,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        @if(User.Identity.IsAuthenticated && User.Identity.Name == "admin")
+                        @if(User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Categories/Index">Categories</a>
@@ -32,6 +40,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Expenses/Index">Expenses</a>
                         </li>
+                        @if(User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Index">Users</a>
+                            </li>
+                        }
                     </ul>
                     @if(!User.Identity.IsAuthenticated)
                     {
@@ -57,15 +71,26 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @* <footer class="border-top footer text-muted">
         <div class="container d-flex justify-content-center">
             &copy; 2022 - webapp - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
+
+    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#0BB783", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#F3F6F9", "dark": "#212121" }, "light": { "white": "#ffffff", "primary": "#D7F9EF", "secondary": "#ECF0F3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#212121", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#ECF0F3", "gray-300": "#E5EAEE", "gray-400": "#D6D6E0", "gray-500": "#B5B5C3", "gray-600": "#80808F", "gray-700": "#464E5F", "gray-800": "#1B283F", "gray-900": "#212121" } }, "font-family": "Poppins" };</script>
+
+
+    @* List Data Table Scripts *@
+    @* <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script> *@
+    <script src="assets/js/pages/crud/datatables/basic/scrollable.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

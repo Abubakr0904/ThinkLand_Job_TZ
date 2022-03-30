@@ -5,40 +5,51 @@
     ViewData["Title"] = "Delete";
 }
 
-<form method="post">
-    <input asp-for="Expense.Id" hidden/>
-    <div class="border p-3 mt-4">
-        <div class="row pb-2">
-            <h2 class="text-primary">Delete Category</h2>
-            <hr>
-        </div>
-        @* <div asp-validation-summary="All"></div> *@
-        <div class="mb-3">
-            <label asp-for="Expense.Name">Name</label>
-            <input asp-for="Expense.Name" disabled class="form-control">
-        </div>
-        <div class="mb-3">
-            <label asp-for="Expense.Amount">Amount</label>
-            <input asp-for="Expense.Amount" disabled class="form-control">
-        </div>
-        <div class="mb-3">
-            <label asp-for="Expense.CreatedAt">Created Date Time</label>
-            <input asp-for="Expense.CreatedAt" disabled class="form-control">
-        </div>
-        <div class="mb-3">
-            <label asp-for="Expense.UpdatedAt">Last Modified</label>
-            <input asp-for="Expense.UpdatedAt" disabled class="form-control">
-        </div>
-        <div class="mb-3">
-            <label asp-for="Expense.Category.Name">Category</label>
-            <input asp-for="Expense.Category.Name" disabled class="form-control">
-        </div>
-        <button class="btn btn-danger" type="submit" style="width:150px">Delete</button>
-        <a asp-page="./Index" class="btn btn-secondary" style="width=150px">
-            Back to List
-        </a>
+<head>
+    <base href="../../../">
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<div class="card card-custom">
+    <div class="card-header">
+        <h3 class="card-title">
+            Delete Expene
+        </h3>
     </div>
-</form>
+    <!--begin::Form-->
+    <form class="form" method="post">
+        <input asp-for="@Model.Expense.Id" hidden />
+        <div class="card-body">
+            <div class="form-group">
+                <label asp-for="@Model.Expense.Name">Name</label>
+                <input type="text" class="form-control" disabled="disabled" placeholder="@Model.Expense.Name" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Expense.Amount">Amount</label>
+                <input type="text" class="form-control" disabled="disabled" placeholder="@Model.Expense.Amount" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Expense.CreatedAt">Created Date</label>
+                <input type="text" class="form-control" disabled="disabled" placeholder="@Model.Expense.CreatedAt.ToLocalTime().ToString(@Model.Culture)" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Expense.UpdatedAt">Last Modified</label>
+                <input type="text" class="form-control" disabled="disabled" placeholder="@Model.Expense.UpdatedAt.ToLocalTime().ToString(@Model.Culture)" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Expense.Category.Name">Category</label>
+                <input type="text" class="form-control" disabled="disabled" placeholder="@Model.Expense.Category.Name" />
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-danger mr-2">Delete</button>
+            <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+    <!--end::Form-->
+</div>
 @section Scripts{
     @{ <partial name="_ValidationScriptsPartial" /> }
 }

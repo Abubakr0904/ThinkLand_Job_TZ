@@ -5,43 +5,59 @@
     ViewData["Title"] = "Create";
 }
 
-@if(Model?.CategoriesModel != null)
-{
-    <form method="post">
-        <div class="border p-3 mt-4">
-            <div class="row pb-2">
-                <h2 class="text-primary">Create Expense</h2>
-                <hr>
+<head>
+    <base href="../../../">
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<div class="card card-custom">
+    <div class="card-header">
+        <h3 class="card-title">
+            Create Expense
+        </h3>
+        <div class="card-toolbar">
+            <div class="example-tools justify-content-center">
+                <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
+                <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
             </div>
-            <div asp-validation-summary="All"></div>
-            <div class="mb-3">
-                <label asp-for="Expense.Name">Name</label>
-                <input asp-for="Expense.Name" class="form-control"/>
+        </div>
+    </div>
+    <!--begin::Form-->
+    <form method="post">
+        <div class="card-body">
+            <div class="form-group">
+                <label asp-for="Expense.Name">Name<span class="text-danger">*</span></label>
+                <input asp-for="Expense.Name" type="text" class="form-control" placeholder="Category Name" />
                 <span asp-validation-for="Expense.Name" class="text-danger"></span>
             </div>
-            <div class="mb-3">
-                <label asp-for="Expense.Amount">Amount</label>
-                <input asp-for="Expense.Amount" class="form-control"/>
+            <div class="form-group">
+                <label asp-for="Expense.Amount">Amount<span class="text-danger">*</span></label>
+                <input asp-for="Expense.Amount" type="text" class="form-control" placeholder="Expense Amount" />
                 <span asp-validation-for="Expense.Amount" class="text-danger"></span>
             </div>
-            <div class="mb-3">
-                <label asp-for="Expense.CategoryId">Category</label>
-                <select required class="form-select form-select-md" asp-for="Expense.CategoryId" aria-label=".form-select-md example">
-                    <option value="">Category</option>
-                    @foreach (var category in Model.CategoriesModel)
-                    {
-                        <option value="@category.Id">@category?.Name</option>                
-                    }
-                </select>
+            <div class="form-group">
+                <label asp-for="Expense.CategoryId">Category<span class="text-danger">*</span></label>
+                <div>
+                    <select required asp-for="Expense.CategoryId" aria-label=".form-select-md example" class="form-control" id="exampleSelect22">
+                        <option value="">Category</option>
+                        @foreach (var category in Model.CategoriesModel)
+                        {
+                            <option value="@category.Id">@category?.Name</option>                
+                        }
+                    </select>
+                </div>
                 <span asp-validation-for="Expense.CategoryId" class="text-danger"></span>
             </div>
-            <button class="btn btn-primary" type="submit" style="width:150px;">Create</button>
-            <a asp-page="./Index" class="btn btn-secondary" style="width=150px">
-                Back to List
-            </a>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary mr-2">Create</button>
+            <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
         </div>
     </form>
-}
+    <!--end::Form-->
+</div>
 @section Scripts{
     @{
         <partial name="_ValidationScriptsPartial" />

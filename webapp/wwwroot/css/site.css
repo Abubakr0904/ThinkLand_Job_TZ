@@ -16,3 +16,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+.category-table {
+  overflow: auto;
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+}
+
+#cat-thead, #cat-tbody {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.cat-thead > tr > th, .cat-tbody > tr > td {
+  width: 1000px;
+  text-align: center !important;
+  vertical-align: middle  ;
+}

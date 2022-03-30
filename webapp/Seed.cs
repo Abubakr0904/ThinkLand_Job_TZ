@@ -38,12 +38,66 @@ public class Seed : BackgroundService
                 _logger.LogError("Role Admin is created successfully.", roleResult.Errors);
             }
         }
+        if(await _roleM.FindByNameAsync("SuperAdmin") == null)
+        {
+            var roleResult = await _roleM.CreateAsync(new IdentityRole<Guid>("SuperAdmin"));
+            if(roleResult.Succeeded)
+            {
+                _logger.LogInformation("Role SuperAdmin is created successfully.");
+            }
+            else
+            {
+                _logger.LogError("Role SuperAdmin is created successfully.", roleResult.Errors);
+            }
+        }
+        if(await _userM.FindByNameAsync("superadmin") == null)
+        {
+            var newUser = new AppUser()
+            {
+                UserName = "superadmin",
+                FullName = "superadmin",
+                Email = "superadmin@admin.uz",
+                JoinedAt = DateTimeOffset.UtcNow,
+                Roles = "Admin, SuperAdmin",
+                Password = "12345"
+            };
+            var identityResult = await _userM.CreateAsync(newUser, "12345");
+            if(identityResult.Succeeded)
+            {
+                var roleResult = await _userM.AddToRoleAsync(await _userM.FindByNameAsync("superadmin"), "SuperAdmin");
+                if(roleResult.Succeeded)
+                {
+                    _logger.LogInformation("User with name superadmin is added to role SuperAdmin successfully.");
+                }
+                else
+                {
+                    _logger.LogError("Error in adding user with name superadmin to role SuperAdmin", roleResult.Errors);
+                }
+                roleResult = await _userM.AddToRoleAsync(await _userM.FindByNameAsync("superadmin"), "Admin");
+                if(roleResult.Succeeded)
+                {
+                    _logger.LogInformation("User with name superadmin is added to role Admin successfully.");
+                }
+                else
+                {
+                    _logger.LogError("Error in adding user with name superadmin to role Admin", roleResult.Errors);
+                }
+            }
+            else
+            {
+                _logger.LogError("User with name superadmin is failed to be created", identityResult.Errors);
+            }
+        }
         if(await _userM.FindByNameAsync("admin") == null)
         {
             var newUser = new AppUser()
             {
                 UserName = "admin",
-                FullName = "admin"
+                FullName = "admin",
+                Email = "admin@admin.uz",
+                JoinedAt = DateTimeOffset.UtcNow,
+                Roles = "Admin",
+                Password = "12345"
             };
             var identityResult = await _userM.CreateAsync(newUser, "12345");
             if(identityResult.Succeeded)

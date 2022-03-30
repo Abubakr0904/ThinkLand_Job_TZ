@@ -4,93 +4,98 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">Expense List</h2>
-            <form method="post" class="row ">
-                <select class="form-select form-select-md w-50" asp-for="SelectedCategoryName" aria-label=".form-select-md example">
-                    <option value="">Category</option>
-                    @foreach (var category in @Model.CategoriesModel)
-                    {
-                        <option value="@category.Name">@category?.Name</option>                
-                    }
-                </select>
-                <button type="submit" class="mx-2 w-25 d-inline-block btn btn-primary">Filter</button>
-            </form>
+<div class="card">
+    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+        <div class="card-title">
+            <h3 class="card-label">Expense List
+            <span class="d-block text-muted pt-2 font-size-sm">Daily Expenses</span></h3>
         </div>
-        <div class="col-6 text-end">
-            <a asp-page="Create" class="btn btn-success">
-                <i class="bi bi-plus-circle">&nbsp</i> Add New Expense
-            </a>
+        <div class="card-toolbar d-flex justify-content-between">
+            @if(Model.userId == default)
+            {
+                <div class="col-6">
+                    <form method="post" class="row">
+                        <select class="form-select form-select-md w-50" asp-for="SelectedCategoryName" aria-label=".form-select-md example">
+                            <option value="">Category</option>
+                            @foreach (var category in @Model.CategoriesModel)
+                            {
+                                <option value="@category.Name">@category?.Name</option>                
+                            }
+                        </select>
+                        <button type="submit" class="mx-2 w-25 d-inline-block btn btn-primary">Filter</button>
+                    </form>
+                </div>
+            }
+            <!--begin::Button-->
+            <a asp-page="Create" class="btn btn-primary font-weight-bolder">
+            <span class="svg-icon svg-icon-md">
+                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24" />
+                        <circle fill="#000000" cx="9" cy="15" r="6" />
+                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                    </g>
+                </svg>
+                <!--end::Svg Icon-->
+            </span>New Expense</a>
+            <!--end::Button-->
         </div>
     </div>
-</div>
-<br><br>
-<table class="table table-bordered table-striped" style="width:100%;">
-    <thead>
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                Expense Name
-            </th>
-            <th>
-                Created DateTime
-            </th>
-            <th>
-                Updated DateTime
-            </th>
-            <th>
-                Amount
-            </th>
-            <th>
-                Category
-            </th>
-            @if(User.Identity.IsAuthenticated && User.Identity.Name == "admin")
-            {
-                <th></th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @if(Model.Expenses != null)
-        {
-            @foreach (var obj in Model.Expenses)
-            {
+    <div class="card-body cat-table-wrapper">
+        <table class="table table-separate table-head-custom table-checkable category-table">
+            <thead class="cat-thead">
                 <tr>
-                    <td>
-                        @obj.Id.ToString().Substring(0, 10)
-                    </td>
-                    <td>
-                        @obj.Name
-                    </td>
-                    <td>
-                        @(Math.Round(obj.Amount))
-                    </td>
-                    <td>
-                        @obj.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss")
-                    </td>
-                    <td>
-                        @obj.UpdatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss")
-                    </td>
-                    <td>
-                        @obj.Category.Name
-                    </td>
+                    <th>ID</th>
+                    <th>Expense Name</th>
+                    <th>Created Date</th>
+                    <th>Updated Date</th>
+                    <th>Amount</th>
+                    <th>Category</th>
                     @if(User.Identity.IsAuthenticated && User.Identity.Name == "admin")
                     {
-                        <td style="min-width: 147px;">
-                            <a asp-page="./Edit" asp-route-id="@obj.Id" 
-                            class="btn btn-primary mx-1"> <i class="bi bi-pencil-square"></i> Edit</a>
-                            
-                            <a asp-page="./Delete" asp-route-id="@obj.Id" 
-                            class="btn btn-danger mx-1"> <i class="bi bi-trash-fill"></i> Delete</a>
-                        </td>
+                        <th>Options</th>
                     }
                 </tr>
-            }
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody class="cat-tbody">
+                @if(Model.Expenses != null)
+                {
+                    @foreach (var obj in Model.Expenses)
+                    {
+                        <tr>
+                            <td>
+                                @obj.Id.ToString().Substring(0, 10)
+                            </td>
+                            <td>
+                                @obj.Name
+                            </td>
+                            <td>
+                                @obj.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss")
+                            </td>
+                            <td>
+                                @obj.UpdatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss")
+                            </td>
+                            <td>
+                                @(Math.Round(obj.Amount))
+                            </td>
+                            <td>
+                                @obj.Category.Name
+                            </td>
+                            @if(User.Identity.IsAuthenticated && (User.IsInRole("SuperAdmin") || User.IsInRole("Admin")))
+                            {
+                                <td style="min-width: 147px;" nowrap="nowrap">
+                                    <a asp-page="./Edit" asp-route-id="@obj.Id" 
+                                    class="btn btn-primary mx-1"> <i class="bi bi-pencil-square"></i> Edit</a>
+                                    
+                                    <a asp-page="./Delete" asp-route-id="@obj.Id" 
+                                    class="btn btn-danger mx-1"> <i class="bi bi-trash-fill"></i> Delete</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

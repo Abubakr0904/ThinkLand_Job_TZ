@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("RequireSuperAdminRole", policy => policy.RequireRole("SuperAdmin"));
 });
 
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
@@ -33,6 +34,7 @@ builder.Services.AddRazorPages()
     .AddRazorPagesOptions(options => 
     {
         options.Conventions.AuthorizeFolder("/Categories", "RequireAdministratorRole");
+        options.Conventions.AuthorizeFolder("/Users", "RequireSuperAdminRole");
         options.Conventions.AuthorizePage("/Expenses/Edit", "RequireAdministratorRole");
         options.Conventions.AuthorizePage("/Expenses/Delete", "RequireAdministratorRole");
         options.Conventions.AuthorizePage("/Expenses/Create");

@@ -16,14 +16,14 @@ namespace webapp.Pages.Categories
 
         public IEnumerable<Category> Categories { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int page = 1, int offset = 0)
         {
             var res = JsonConvert.SerializeObject(await _unitOfWork.Categories.GetAllAsync(), Formatting.None,
             new JsonSerializerSettings()
             { 
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
-            Categories = JsonConvert.DeserializeObject<IEnumerable<Category>>(res);
+            Categories = JsonConvert.DeserializeObject<IEnumerable<Category>>(res).Skip(offset * 10).Take(10);
         }
     }
 }

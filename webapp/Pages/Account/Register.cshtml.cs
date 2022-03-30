@@ -28,12 +28,14 @@ public class RegisterModel : PageModel
         }
 
         var user = await _userM.Users.FirstOrDefaultAsync(u => u.UserName == RegisterViewModel.UserName);
-        if(user == default)
+        if(user == null || user == default)
         {
             var newUser = new AppUser()
             {
                 UserName = RegisterViewModel.UserName,
-                FullName = RegisterViewModel.FullName
+                FullName = RegisterViewModel.FullName,
+                JoinedAt = DateTimeOffset.UtcNow,
+                Roles = ""
             };
 
             var result = await _userM.CreateAsync(newUser, RegisterViewModel.Password);

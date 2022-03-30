@@ -175,6 +175,9 @@ namespace webapp.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("text");
 
+                    b.Property<DateTimeOffset>("JoinedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
@@ -189,6 +192,9 @@ namespace webapp.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
@@ -198,11 +204,17 @@ namespace webapp.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Roles")
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -335,7 +347,7 @@ namespace webapp.Migrations
             modelBuilder.Entity("webapp.Entities.Expense", b =>
                 {
                     b.HasOne("webapp.Entities.AppUser", "Author")
-                        .WithMany("Expenses")
+                        .WithMany()
                         .HasForeignKey("AuthorId");
 
                     b.HasOne("webapp.Entities.Category", "Category")
@@ -347,11 +359,6 @@ namespace webapp.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("webapp.Entities.AppUser", b =>
-                {
-                    b.Navigation("Expenses");
                 });
 
             modelBuilder.Entity("webapp.Entities.Category", b =>

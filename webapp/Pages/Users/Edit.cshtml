@@ -1,0 +1,73 @@
+@page
+@model webapp.Pages.Users.EditModel
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<head>
+    <base href="../../../">
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<div class="card card-custom">
+    <div class="card-header">
+        <h3 class="card-title">
+            Edit User
+        </h3>
+        <div class="card-toolbar">
+            <div class="example-tools justify-content-center">
+                <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
+                <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
+            </div>
+        </div>
+    </div>
+    <!--begin::Form-->
+    <form method="post">
+        <div class="card-body">
+            <input type="text" hidden asp-for="EditUser.OldPassword">
+            <div class="form-group">
+                <label asp-for="EditUser.Username">Username<span class="text-danger">*</span></label>
+                <input asp-for="EditUser.Username" readonly type="text" class="form-control" placeholder="Username" />
+                <span asp-validation-for="EditUser.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditUser.Fullname">Fullname</label>
+                <input asp-for="EditUser.Fullname" type="text" class="form-control" placeholder="Fullname" />
+                <span asp-validation-for="EditUser.Fullname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditUser.Email">Email<span class="text-danger">*</span></label>
+                <input asp-for="EditUser.Email" type="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="EditUser.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditUser.Roles">Roles</label>
+                <input asp-for="EditUser.Roles" type="text" class="form-control" placeholder="Roles: e.g: Admin, SuperAdmin" />
+                <span asp-validation-for="EditUser.Roles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditUser.Password">Password</label>
+                <input asp-for="EditUser.Password" type="text" class="form-control" placeholder="Password" />
+                <span asp-validation-for="EditUser.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditUser.ConfirmPassword">ConfirmPassword</label>
+                <input asp-for="EditUser.ConfirmPassword" type="text" class="form-control" placeholder="ConfirmPassword" />
+                <span asp-validation-for="EditUser.ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary mr-2">Edit</button>
+            <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+    <!--end::Form-->
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

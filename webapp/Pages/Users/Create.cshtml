@@ -1,0 +1,75 @@
+@page
+@model webapp.Pages.Users.CreateModel
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<head>
+    <base href="../../../">
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<div class="card card-custom">
+    <div class="card-header">
+        <h3 class="card-title">
+            Create User
+        </h3>
+        <div class="card-toolbar">
+            <div class="example-tools justify-content-center">
+                <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
+                <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
+            </div>
+        </div>
+    </div>
+    <!--begin::Form-->
+    <form method="post">
+        <div class="card-body">
+             <!-- TODO: error messages are not showing. Make it work. -->
+            @* <label asp-for="@Model.NewUser.ErrorMessage" ></label>
+            <span class="text-danger" asp-validation-for="@Model.NewUser.ErrorMessage"></span> *@
+            <div class="form-group">
+                <label asp-for="NewUser.Fullname">Fullname</label>
+                <input asp-for="NewUser.Fullname" type="text" class="form-control" placeholder="Fullname" />
+                <span asp-validation-for="NewUser.Fullname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewUser.Username">Username<span class="text-danger">*</span></label>
+                <input asp-for="NewUser.Username" type="text" class="form-control" placeholder="Username" />
+                <span asp-validation-for="NewUser.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewUser.Email">Email<span class="text-danger">*</span></label>
+                <input asp-for="NewUser.Email" type="text" class="form-control" placeholder="Email" />
+                <span asp-validation-for="NewUser.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewUser.Roles">Roles</label>
+                <input asp-for="NewUser.Roles" type="text" class="form-control" placeholder="Roles: e.g: Admin, SuperAdmin" />
+                <span asp-validation-for="NewUser.Roles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewUser.Password">Password<span class="text-danger">*</span></label>
+                <input asp-for="NewUser.Password" type="text" class="form-control" placeholder="Password" />
+                <span asp-validation-for="NewUser.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewUser.ConfirmPassword">ConfirmPassword<span class="text-danger">*</span></label>
+                <input asp-for="NewUser.ConfirmPassword" type="text" class="form-control" placeholder="ConfirmPassword" />
+                <span asp-validation-for="NewUser.ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary mr-2">Create</button>
+            <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+    <!--end::Form-->
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
